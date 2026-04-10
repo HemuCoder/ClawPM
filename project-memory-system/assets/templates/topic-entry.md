@@ -10,7 +10,7 @@
 - 当前在推进到哪一步。
 
 ## 默认读取路径
-- 快速了解全局：`memory/topics/<topic>/00-overview.md`
+- 快速了解项目全景：`memory/topics/<topic>/00-overview.md`
 - 详细推进过程：`memory/topics/<topic>/journal/YYYY-MM.md`
 - 其他专题文件：`memory/topics/<topic>/01-xxx.md`、`02-xxx.md`
 
