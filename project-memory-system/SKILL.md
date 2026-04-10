@@ -1,47 +1,48 @@
 ---
 name: project-memory-system
-description: Manage OpenClaw project memory with a local topics-based file system. Use when initializing or repairing `memory/topics`, bootstrapping `topics-index.md` and today's daily memory, scanning existing project memories, classifying topics as structured vs needing structure, or maintaining project memory without creating new topics unless the user explicitly asks to create one.
+description: 用本地 `memory/topics` 文件体系管理 OpenClaw 的项目记忆。适用于：初始化或修复 `memory/topics`、补齐 `topics-index.md` 与今日日记、扫描现有项目记忆、识别哪些 topic 已结构化/待结构化，并在不擅自新建 topic 的前提下持续维护项目记忆。只有当用户明确要求“新建主题/项目”时，才允许创建新的 topic。
 ---
 
-# Project Memory System
+# 项目记忆系统
 
-Manage project memory only. Do not use this skill for persona, identity, or user-profile initialization.
+这个 skill 只负责**项目记忆 / topic 记忆**，不负责人格、身份或用户画像初始化。
 
-## Core rules
+## 核心规则
 
-- Create a new topic only when the user explicitly asks to create a new topic or project archive.
-- Initialize only the project-memory skeleton; do not auto-create topic files for projects discovered only in daily memory.
-- Keep `memory/topics/<topic>.md` lightweight. Treat it as an entry file, not the full archive.
-- Treat `00-overview.md` as the only required file inside a structured topic folder. Other `01/02/03...` files are optional and project-specific.
-- Do not restructure old topics during initialization unless the user explicitly asks for restructuring.
+- 只有用户明确要求“新建主题 / 新建项目档案”时，才允许创建新的 topic。
+- 初始化时只补齐项目记忆骨架，不因为 daily memory 里提到某个项目就自动建 topic。
+- `memory/topics/<topic>.md` 必须保持轻量，只做入口文件，不承载整份项目档案。
+- 结构化 topic 目录里，`00-overview.md` 是唯一必需文件；`01/02/03...` 文件按项目类型自由扩展。
+- 初始化时不要擅自重构旧 topic；只识别、分类、汇报，等用户明确要求后再整理。
 
-## Initialization workflow
+## 初始化流程
 
-When the user asks to set up or repair project memory:
+当用户要求初始化、修复、接管项目记忆时：
 
-1. Read `references/initialization-flow.md`.
-2. Run `scripts/init_project_memory.py --workspace <target-workspace>`.
-3. Review the report from the script.
-4. Tell the user:
-   - what skeleton files were created,
-   - how many topics were found,
-   - which topics are already structured,
-   - which topics still need structure,
-   - that new topics will only be created on explicit request.
-5. If the report shows older topics that need structure, keep using them as-is for now and mention them as candidates for later cleanup.
+1. 读取 `references/initialization-flow.md`。
+2. 运行 `scripts/init_project_memory.py --workspace <目标工作区>`。
+3. 查看脚本输出的初始化结果与中文摘要。
+4. 向用户汇报：
+   - 新补齐了哪些基础文件；
+   - 扫描到了多少个 topic；
+   - 哪些 topic 已结构化；
+   - 哪些 topic 还待结构化；
+   - 是否存在只有目录没有入口文件的异常；
+   - 后续将继续遵守“只有用户明确要求时才新建 topic”的规则。
+5. 如果发现旧 topic 结构不完整，先继续沿用，不要在初始化阶段直接改结构；把它们作为后续可整理对象说明给用户。
 
-## Working with existing topics
+## 使用已有 topic
 
-When a request hits an existing topic:
+当任务命中已有 topic 时：
 
-1. Read the topic entry file first: `memory/topics/<topic>.md`.
-2. If the topic has a folder, read `00-overview.md` next.
-3. Read `01/02/03...` files only when the current task needs them.
-4. Read the current journal file only when recent execution history matters.
+1. 先读入口文件：`memory/topics/<topic>.md`。
+2. 如果该 topic 有目录，再读 `00-overview.md`。
+3. 只在当前任务确实需要时，按需读取 `01/02/03...` 文件。
+4. 只有在最近推进历史会影响当前判断时，才读取当月 `journal`。
 
-## Initialization deliverable
+## 初始化完成的最低交付
 
-Initialization should leave the workspace in this minimum state:
+初始化后，工作区至少应具备：
 
 ```text
 memory/
@@ -50,4 +51,4 @@ memory/
     └── topics-index.md
 ```
 
-If topics already exist, initialization should classify them and report their status. It should not auto-create or auto-restructure project archives.
+如果工作区里已经存在旧 topic，初始化应完成分类并汇报状态；但不应自动创建新项目档案，也不应自动拆分旧 topic 结构。
