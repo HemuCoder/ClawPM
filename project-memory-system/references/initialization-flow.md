@@ -2,14 +2,15 @@
 
 ## 目标
 
-接管一个现有 OpenClaw 工作区中的**项目记忆系统**。
+接管一个现有 OpenClaw 工作区中的**项目记忆系统**，并把最小必要规则落进 `AGENTS.md`，让项目记忆机制在后续日常对话中持续生效。
 
-初始化只负责四件事：
+初始化只负责五件事：
 
 1. 扫描当前项目记忆状态。
 2. 在缺失时补齐最低公共骨架。
 3. 对现有 topic 的结构完整度做分类。
-4. 生成一份简短的接管结果，供 agent 向用户汇报。
+4. 检查并更新工作区 `AGENTS.md` 的最小项目记忆规则。
+5. 生成一份简短的接管结果，供 agent 向用户汇报。
 
 初始化**不负责**：
 
@@ -22,6 +23,7 @@
 
 优先检查这些路径：
 
+- `AGENTS.md`
 - `memory/`
 - `memory/topics/`
 - `memory/topics/topics-index.md`
@@ -68,6 +70,7 @@
 - 创建 `memory/topics/`
 - 创建今天的 `memory/YYYY-MM-DD.md`
 - 在缺失时创建 `memory/topics/topics-index.md`
+- 按最小规则补齐或更新 `AGENTS.md` 中的项目记忆常驻部分
 
 ## 初始化禁止自动执行的动作
 
@@ -77,6 +80,19 @@
 - 把单文件 topic 自动拆成结构化目录
 - 重命名 topic
 - 删除旧文件
+- 重写整个 `AGENTS.md`，覆盖用户已有规则
+
+## AGENTS.md 规则
+
+初始化时应参考 `references/agents-integration.md`，把最小必要的项目记忆规则写入工作区 `AGENTS.md`。
+
+目标不是重写整个 `AGENTS.md`，而是确保后续日常对话里，agent 默认知道：
+
+- 命中项目时先查 `topics-index.md`
+- 命中 topic 后先读入口文件和 `00-overview.md`
+- 项目形成稳定阶段结果后自动执行一次回写
+- `daily` 简写、`journal` 详写
+- 新 topic 只有用户明确要求时才创建
 
 ## topics-index 规则
 
@@ -93,16 +109,5 @@
 - 哪些 topic 已结构化
 - 哪些 topic 待结构化
 - 哪些 topic 存在“仅目录无入口”异常
+- `AGENTS.md` 是否已补齐项目记忆常驻规则
 - 后续会继续遵守“只有用户明确要求时才创建新 topic”的规则
-
-## 建议汇报格式
-
-```text
-项目记忆初始化好了。
-我已经补齐了基础骨架，并扫描了现有 topics。
-- 新创建：topics-index、今日日记
-- 已结构化：InfluenceOS
-- 待结构化：job-search、stock-management-system
-- 异常：无
-后面我会继续按固定规则维护：只有你明确说“新建主题/项目”时，我才创建新的 topic。
-```
