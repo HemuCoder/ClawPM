@@ -1,6 +1,6 @@
 ---
 name: project-memory-system
-description: 用本地 `memory/topics` 文件体系管理 OpenClaw 的项目记忆。适用于：初始化或修复 `memory/topics`、补齐 `topics-index.md` 与今日日记、扫描现有项目记忆并修正 AGENTS.md 中的常驻项目记忆规则；当用户恢复某个已有项目、继续推进长期主题、询问某项目下一步、一次项目协作完成子任务/形成稳定结论/更新关键卡点/明确下一步，或项目讨论在做了实质推进后被切换到别的话题并进入本轮收尾时，按“daily 简写、journal 详写、overview 按需更新”的规则读取并回写项目记忆。只有当用户明确要求“新建主题/项目”时，才允许创建新的 topic。
+description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / journal / overview）。在以下情况使用：用户继续推进已有项目或长期主题；询问某项目当前状态、下一步、卡点或历史推进；项目讨论形成阶段性结论或关键更新；项目在本轮对话中推进后切换到别的话题、需要在收尾前回写项目进展；需要初始化、修复或整理 `memory/topics`、`topics-index.md`、项目 journal / overview，或把项目记忆规则写入 `AGENTS.md`。仅在用户明确要求时创建新 topic。
 ---
 
 # 项目记忆系统
