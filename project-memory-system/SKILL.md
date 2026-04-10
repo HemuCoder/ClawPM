@@ -1,11 +1,16 @@
 ---
 name: project-memory-system
-description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / journal / overview）。在以下情况使用：用户继续推进已有项目或长期主题；询问某项目当前状态、下一步、卡点或历史推进；项目讨论形成阶段性结论或关键更新；项目在本轮对话中推进后切换到别的话题、需要在收尾前回写项目进展；需要初始化、修复或整理 `memory/topics`、`topics-index.md`、项目 journal / overview，或把项目记忆规则写入 `AGENTS.md`。仅在用户明确要求时创建新 topic。
+description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / journal / overview）。在以下情况使用：继续推进已有项目或长期主题；询问某项目当前状态、下一步、卡点或历史过程；项目讨论产生阶段性结论、关键更新，或在切换话题 / 会话前需要回写项目进展；初始化、修复或整理 `memory/topics`、`topics-index.md`、项目 journal / overview，或把项目记忆规则写入 `AGENTS.md`。仅在用户明确要求时创建新 topic。
 ---
 
 # 项目记忆系统
 
-这个 skill 只负责**项目记忆 / topic 记忆**，不负责人格、身份或用户画像初始化。
+这个 skill 用一套本地文件结构维护项目记忆：
+- `memory/YYYY-MM-DD.md` 记录当天的简短项目摘要
+- `memory/topics/<topic>/journal/YYYY-MM.md` 记录详细推进过程
+- `memory/topics/<topic>/00-overview.md` 记录项目全景、当前状态与导航
+
+它只负责**项目记忆 / topic 记忆**，不负责人格、身份或用户画像初始化。
 
 ## 核心规则
 
