@@ -7,8 +7,9 @@
 核心原则：
 
 - `daily` 写短
-- `journal` 写细
+- `index` 只导航
 - `overview` 写稳态
+- `journal` 写细
 
 ## 什么时候触发回写
 
@@ -29,7 +30,7 @@
 - 还在发散 brainstorming，结论未稳定
 - 与项目无关
 
-## 三层写回规则
+## 四层写回规则
 
 ### 1. daily：简短摘要
 
@@ -44,7 +45,19 @@
 
 不要把详细讨论过程写进 daily，避免前一日日记自动加载时浪费上下文。
 
-### 2. journal：详细过程
+### 2. index：全局导航
+
+写入 `memory/topics/index.md`。
+
+只在这些情况更新：
+
+- 新增了一个用户明确要求创建的 topic
+- 某个项目状态需要在全局索引中更新
+- 项目的命中关键词或最近更新时间需要调整
+
+`index.md` 只做全局导航，不写单个项目的详细背景、过程、结论或下一步。
+
+### 3. journal：详细过程
 
 写入 `memory/topics/<topic>/journal/YYYY-MM.md`。
 
@@ -58,7 +71,7 @@
 
 journal 是项目过程回放的主要载体。
 
-### 3. overview / 专题文件：长期状态
+### 4. overview / 专题文件：长期状态
 
 只在项目全局状态真的变化时，更新：
 
@@ -87,10 +100,16 @@ journal 是项目过程回放的主要载体。
 
 ### daily 示例
 
-- InfluenceOS：完成项目记忆 skill 的回写规则设计，确定 daily 简写、journal 详写，下一步整理正式 skill 文案。
+- project-memory-system：完成项目记忆目录结构重构讨论，确定改为 `topics/index.md + 项目目录/00-overview.md + journal`，下一步更新 skill 文档与初始化脚本。
+
+### index 示例
+
+| 项目 | 路径 | 状态 | 最近更新 | 关键词 |
+|---|---|---|---|---|
+| project-memory-system | `memory/topics/project-memory-system/` | 打磨中 | 2026-04-11 | 记忆系统, skill, topic |
 
 ### journal 示例
 
-- 讨论了为什么 daily 不应承载详细项目过程：因为次日会自动加载前一日日记，若项目细节过多会在非项目场景白白占用上下文。
-- 最终决定将详细推进过程迁移到 topic journal，仅在命中项目时渐进加载。
-- 同时明确：项目记忆维护不应完全依赖用户手动提醒，而应在形成稳定阶段结果后自动触发一次回写。
+- 讨论了为什么不再保留 `memory/topics/<topic>.md` 单文件入口：因为它容易和 `00-overview.md` 职责重叠，导致 agent 把两份文件写成几乎相同的内容。
+- 最终决定把结构收敛成：全局只保留一个 `index.md`，单项目只保留目录 + `00-overview.md`，详细过程进入 `journal`。
+- 同时明确：AGENTS.md 中要加入“会话启动时轻量读取 index.md”的常驻规则，确保 OpenClaw 在日常协作中能先拿到项目导航索引。

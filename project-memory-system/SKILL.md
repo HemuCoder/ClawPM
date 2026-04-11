@@ -1,14 +1,15 @@
 ---
 name: project-memory-system
-description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / journal / overview）。在以下情况使用：对话中提到某个已有项目或长期主题，需要读取对应项目记忆继续推进；询问某项目当前状态、下一步、卡点或历史过程；项目任务状态、阶段结论、关键风险或下一步发生变化，需要按规则更新项目记忆；当前项目对话收尾、切换到别的话题，或准备结束 / 重开会话前，需要总结并回写本轮项目进展。仅在用户明确要求时创建新 topic。
+description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / index / overview / journal）。在以下情况使用：对话中提到某个已有项目或长期主题，需要读取对应项目记忆继续推进；询问某项目当前状态、下一步、卡点或历史过程；项目任务状态、阶段结论、关键风险或下一步发生变化，需要按规则更新项目记忆；当前项目对话收尾、切换到别的话题，或准备结束 / 重开会话前，需要总结并回写本轮项目进展。仅在用户明确要求时创建新 topic。
 ---
 
 # 项目记忆系统
 
 这个 skill 用一套本地文件结构维护项目记忆：
 - `memory/YYYY-MM-DD.md` 记录当天的简短项目摘要
+- `memory/topics/index.md` 记录全部项目记忆索引，只做导航、命中与状态总览
+- `memory/topics/<topic>/00-overview.md` 记录单个项目的全景、当前状态与导航
 - `memory/topics/<topic>/journal/YYYY-MM.md` 记录详细推进过程
-- `memory/topics/<topic>/00-overview.md` 记录项目全景、当前状态与导航
 
 它只负责**项目记忆 / topic 记忆**，不负责人格、身份或用户画像初始化。
 
@@ -17,7 +18,8 @@ description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / 
 - 只有用户明确要求“新建主题 / 新建项目档案”时，才允许创建新的 topic。
 - 初始化时只补齐项目记忆骨架，不因为 daily memory 里提到某个项目就自动建 topic。
 - 初始化完成后，要把最小必要的项目记忆规则写入工作区 `AGENTS.md`，让这套机制成为常驻行为，而不只是一次性 skill。
-- `memory/topics/<topic>.md` 必须保持轻量，只做入口文件，不承载整份项目档案。
+- `memory/topics/index.md` 只做全局索引，不承载单个项目的详细背景、结论或下一步。
+- 每个项目只保留目录结构，不再使用 `memory/topics/<topic>.md` 这种项目入口文件，避免和 `00-overview.md` 职责重叠。
 - 结构化 topic 目录里，`00-overview.md` 是唯一必需文件；`01/02/03...` 文件按项目类型自由扩展。
 - 初始化时不要擅自重构旧 topic；只识别、分类、汇报，等用户明确要求后再整理。
 - `memory/YYYY-MM-DD.md` 只记录**简短项目摘要**，避免前一日日记自动加载时占用过多上下文。
@@ -37,7 +39,7 @@ description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / 
    - 扫描到了多少个 topic；
    - 哪些 topic 已结构化；
    - 哪些 topic 还待结构化；
-   - 是否存在只有目录没有入口文件的异常；
+   - 哪些 topic 存在旧结构或异常项；
    - `AGENTS.md` 是否已补齐项目记忆常驻规则；
    - 后续将继续遵守“只有用户明确要求时才新建 topic”的规则。
 6. 如果发现旧 topic 结构不完整，先继续沿用，不要在初始化阶段直接改结构；把它们作为后续可整理对象说明给用户。
@@ -47,7 +49,7 @@ description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / 
 当用户正在推进一个已有项目，或当前协作形成了一个**稳定阶段结果**时：
 
 1. 读取 `references/writeback-rules.md`。
-2. 命中已有 topic 时，先读 `memory/topics/<topic>.md`，再读 `00-overview.md`。
+2. 命中已有 topic 时，先读 `memory/topics/index.md`，再进入对应项目目录读取 `00-overview.md`。
 3. 只在当前任务确实需要时，按需读取 `01/02/03...` 文件与当月 `journal`。
 4. 当出现以下任一情况时，执行一次项目记忆回写：
    - 完成了一个明确子任务；
@@ -65,8 +67,8 @@ description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / 
 
 当任务命中已有 topic 时：
 
-1. 先读入口文件：`memory/topics/<topic>.md`。
-2. 如果该 topic 有目录，再读 `00-overview.md`。
+1. 先读全局索引：`memory/topics/index.md`。
+2. 命中项目后，进入对应目录读取 `00-overview.md`。
 3. 只在当前任务确实需要时，按需读取 `01/02/03...` 文件。
 4. 只有在最近推进历史会影响当前判断时，才读取当月 `journal`。
 
@@ -78,7 +80,7 @@ description: 用本地 `memory/topics` 文件体系管理项目记忆（daily / 
 memory/
 ├── YYYY-MM-DD.md
 └── topics/
-    └── topics-index.md
+    └── index.md
 ```
 
 并且工作区 `AGENTS.md` 中应具备最小必要的项目记忆常驻规则。
